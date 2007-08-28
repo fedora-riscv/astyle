@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        1.21
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 Group:          Development/Tools
@@ -41,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/*.html
 
 %changelog
+* Tue Aug 28 2007 Fedora Release Engineering <rel-eng at fedoraproject dot org> - 1.21-6
+- Rebuild for selinux ppc32 issue.
+
 * Mon Jul 2 2007 Adam M. Dutko <gnome at dux-linux org> 1.21-5
 - Fixed sourceforge Source0 link.
 - Updated to 1.21.
