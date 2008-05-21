@@ -1,10 +1,10 @@
 Name:           astyle
 Version:        1.21
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 Group:          Development/Tools
-License:        LGPL
+License:        LGPLv2+
 URL:            http://astyle.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -41,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/*.html
 
 %changelog
+* Wed May 21 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 1.21-8
+- fix license tag
+
 * Mon Feb 18 2008 Fedora Release Engineering <rel-eng@fedoraproject.org> - 1.21-7
 - Autorebuild for GCC 4.3
 
