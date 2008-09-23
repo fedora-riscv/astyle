@@ -1,12 +1,15 @@
 Name:           astyle
 Version:        1.21
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 Group:          Development/Tools
 License:        LGPLv2+
 URL:            http://astyle.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
+
+Patch0:         %{name}-%{version}-gcc43.patch
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
@@ -17,7 +20,7 @@ languages.
 
 %prep
 %setup -q -n %{name}
-
+%patch0 -p1
 
 %build
 g++ -o astyle $RPM_OPT_FLAGS src/*.cpp
@@ -41,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/*.html
 
 %changelog
+* Wed Sep 24 2008 Debarshi Ray <rishi@fedoraproject.org> - 1.21-9
+- Fixed build failure with gcc-4.3. Closes Red Hat Bugzilla bug #433971.
+
 * Wed May 21 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 1.21-8
 - fix license tag
 
