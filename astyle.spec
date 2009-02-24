@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        1.21
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 Group:          Development/Tools
@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/*.html
 
 %changelog
+* Mon Feb 23 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.21-10
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Wed Sep 24 2008 Debarshi Ray <rishi@fedoraproject.org> - 1.21-9
 - Fixed build failure with gcc-4.3. Closes Red Hat Bugzilla bug #433971.
 
