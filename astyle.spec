@@ -45,6 +45,9 @@ rm -rf $RPM_BUILD_ROOT
 - Update to new version
 - patch from Sep 24 2008 not needed anymore for gcc-4.4
 
+* Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.21-11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+
 * Mon Feb 23 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.21-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
