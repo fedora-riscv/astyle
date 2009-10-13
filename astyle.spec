@@ -1,14 +1,12 @@
 Name:           astyle
-Version:        1.21
-Release:        11%{?dist}
+Version:        1.23
+Release:        1%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 Group:          Development/Tools
 License:        LGPLv2+
 URL:            http://astyle.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
-
-Patch0:         %{name}-%{version}-gcc43.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -20,7 +18,6 @@ languages.
 
 %prep
 %setup -q -n %{name}
-%patch0 -p1
 
 %build
 g++ -o astyle $RPM_OPT_FLAGS src/*.cpp
@@ -44,8 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/*.html
 
 %changelog
-* Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.21-11
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+* Tue Oct 13 2009 Thomas Spura <tomspur@fedoraproject.org> - 1.23-1
+- Update to new version
+- patch from Sep 24 2008 not needed anymore for gcc-4.4
 
 * Mon Feb 23 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.21-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
