@@ -1,10 +1,10 @@
 Name:           astyle
-Version:        1.23
+Version:        1.24
 Release:        1%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 Group:          Development/Tools
-License:        LGPLv2+
+License:        LGPLv3+
 URL:            http://astyle.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
 
@@ -41,6 +41,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/*.html
 
 %changelog
+* Sat Jan 30 2010 Thomas Spura <tomspur@fedoraproject.org> - 1.24-1
+- update to new version
+- change license to LGPLv3+ (changed since 1.23, but missed there)
+
 * Tue Oct 13 2009 Thomas Spura <tomspur@fedoraproject.org> - 1.23-1
 - Update to new version
 - patch from Sep 24 2008 not needed anymore for gcc-4.4
