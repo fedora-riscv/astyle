@@ -1,6 +1,6 @@
 Name:           astyle
-Version:        2.02.1
-Release:        4%{?dist}
+Version:        2.03
+Release:        1%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 Group:          Development/Tools
@@ -41,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/*.html
 
 %changelog
+* Tue Jul 30 2013 Thomas Spura <tomspur@fedoraproject.org> - 2.03-1
+- update to new version (fixes #990162)
+
 * Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.02.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
