@@ -1,5 +1,5 @@
 Name:           astyle
-Version:        2.03
+Version:        2.04
 Release:        1%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
@@ -41,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/*.html
 
 %changelog
+* Tue Nov  5 2013 Thomas Spura <tomspur@fedoraproject.org> - 2.04-1
+- update to new version (fixes #1025982, #996008)
+
 * Tue Jul 30 2013 Thomas Spura <tomspur@fedoraproject.org> - 2.03-1
 - update to new version (fixes #990162)
 
