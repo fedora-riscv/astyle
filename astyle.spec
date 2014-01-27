@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        2.04
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 Group:          Development/Tools
@@ -15,32 +15,65 @@ Artistic Style is a source code indenter, source code formatter, and
 source code beautifier for the C, C++, C# and Java programming
 languages.
 
+%package devel
+Summary:        Source code formatter for C-like programming languages
+Group:          Development/Tools
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+%description devel
+Artistic Style is a source code indenter, source code formatter, and
+source code beautifier for the C, C++, C# and Java programming
+languages.
+
+This package contains the shared library.
+
 
 %prep
 %setup -q -n %{name}
 
 %build
-g++ -o astyle $RPM_OPT_FLAGS src/*.cpp
 chmod a-x src/*
 chmod a-x doc/*
 
+pushd build/gcc
+    make CFLAGS="$RPM_OPT_FLAGS -fPIC" release static %{?_smp_mflags}
+
+    # Do generating of the shared solibrary the scalapack.spec way
+    mkdir solibrary
+    cd solibrary
+    ar xv ../bin/libastyle.a
+    gcc -shared -o libastyle.so.2.0.0 *.o -Wl,-soname=libastyle.so.2
+popd
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%{_bindir}/install -p -D -m 755 astyle $RPM_BUILD_ROOT%{_bindir}/astyle
+pushd build/gcc
+    make prefix="%{buildroot}%{_prefix}" INSTALL="install -p" install
+    #install -p -D -m 755 bin/libastyle.so $RPM_BUILD_ROOT%{_libdir}/libastyle.so
+    install -p -D -m 755 solibrary/libastyle.so.2.0.0 $RPM_BUILD_ROOT%{_libdir}/libastyle.so.2.0.0
+    pushd $RPM_BUILD_ROOT%{_libdir}
+        ln -fs libastyle.so.2.0.0 libastyle.so.2
+        ln -s libastyle.so.2.0.0 libastyle.so
 
+    popd
+popd
 
-%clean
-rm -rf $RPM_BUILD_ROOT
+%post -p /sbin/ldconfig
 
+%postun -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root,-)
-%{_bindir}/astyle
-
 %doc doc/*.html
+%{_bindir}/astyle
+%{_libdir}/libastyle.so.*
+
+%files devel
+%{_libdir}/libastyle.so
 
 %changelog
+* Fri Jan 17 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.04-2
+- build shared library without SONAME (opened bug upstream to provide a SONAME in the next release)
+- remove defattr
+- remove clean section
+
 * Tue Nov  5 2013 Thomas Spura <tomspur@fedoraproject.org> - 2.04-1
 - update to new version (fixes #1025982, #996008)
 
