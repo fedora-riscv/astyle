@@ -70,7 +70,7 @@ popd
 
 %changelog
 * Fri Jan 17 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.04-2
-- build shared library without SONAME (opened bug upstream to provide a SONAME in the next release)
+- build shared library without SONAME (opened bug upstream to provide a SONAME in the next release, #1054422)
 - remove defattr
 - remove clean section
 
