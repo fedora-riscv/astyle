@@ -1,12 +1,14 @@
 Name:           astyle
 Version:        2.04
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 Group:          Development/Tools
 License:        LGPLv3+
 URL:            http://astyle.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
+# publish API used by Code::Blocks IDE
+Patch0:         %{name}-2.04-indent-api.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -29,31 +31,29 @@ This package contains the shared library.
 
 %prep
 %setup -q -n %{name}
+%patch0 -p1 -b .indent-api
 
 %build
 chmod a-x src/*
 chmod a-x doc/*
 
-pushd build/gcc
-    make CFLAGS="$RPM_OPT_FLAGS -fPIC" release static %{?_smp_mflags}
-
-    # Do generating of the shared solibrary the scalapack.spec way
-    mkdir solibrary
-    cd solibrary
-    ar xv ../bin/libastyle.a
-    gcc -shared -o libastyle.so.2.0.0 *.o -Wl,-soname=libastyle.so.2
+pushd src
+    # it's much easier to compile it here than trying to fix the Makefile
+    g++ $RPM_OPT_FLAGS -fPIC -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp
+    g++ -shared -o libastyle-%{version}.so *.o -Wl,-soname,libastyle-%{version}.so
+    ln -s libastyle-%{version}.so libastyle.so
+    g++ $RPM_OPT_FLAGS -c ASLocalizer.cpp astyle_main.cpp
+    g++ $RPM_OPT_FLAGS -o astyle ASLocalizer.o astyle_main.o -L. -lastyle
 popd
 
 %install
-pushd build/gcc
-    make prefix="%{buildroot}%{_prefix}" INSTALL="install -p" install
-    #install -p -D -m 755 bin/libastyle.so $RPM_BUILD_ROOT%{_libdir}/libastyle.so
-    install -p -D -m 755 solibrary/libastyle.so.2.0.0 $RPM_BUILD_ROOT%{_libdir}/libastyle.so.2.0.0
-    pushd $RPM_BUILD_ROOT%{_libdir}
-        ln -fs libastyle.so.2.0.0 libastyle.so.2
-        ln -s libastyle.so.2.0.0 libastyle.so
+pushd src
+    mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir}}
 
-    popd
+    install -p -m 755 astyle $RPM_BUILD_ROOT%{_bindir}
+    install -p -m 755 libastyle-%{version}.so $RPM_BUILD_ROOT%{_libdir}
+    cp -P libastyle.so $RPM_BUILD_ROOT%{_libdir}
+    install -p -m 644 astyle.h $RPM_BUILD_ROOT%{_includedir}
 popd
 
 %post -p /sbin/ldconfig
@@ -63,12 +63,18 @@ popd
 %files
 %doc doc/*.html
 %{_bindir}/astyle
-%{_libdir}/libastyle.so.*
+%{_libdir}/libastyle-*.so
 
 %files devel
 %{_libdir}/libastyle.so
+%{_includedir}/astyle.h
 
 %changelog
+* Thu Mar 20 2014 Dan Horák <dan[at]danny.cz> - 2.04-3
+- compile directly in %%build so the astyle binary links against our library
+- include public header file in devel subpackage
+- use full version info in soname as there is no API/ABI compatibility guaranteed
+
 * Fri Jan 17 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.04-2
 - build shared library without SONAME (opened bug upstream to provide a SONAME in the next release, #1054422)
 - remove defattr

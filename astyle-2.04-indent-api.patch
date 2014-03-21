@@ -1,0 +1,23 @@
+diff -up astyle/src/astyle.h.indent-api astyle/src/astyle.h
+--- astyle/src/astyle.h.indent-api	2014-03-20 13:41:48.000000000 +0100
++++ astyle/src/astyle.h	2014-03-20 13:42:55.000000000 +0100
+@@ -389,6 +389,10 @@ class ASBeautifier : protected ASResourc
+ 		bool getPreprocDefineIndent(void) const;
+ 		bool getSwitchIndent(void) const;
+ 
++		// set by Code::Blocks IDE
++		void setBlockIndent(bool state);
++		void setBracketIndent(bool state);
++
+ 	protected:
+ 		void deleteBeautifierVectors();
+ 		const string* findHeader(const string &line, int i,
+@@ -397,8 +401,6 @@ class ASBeautifier : protected ASResourc
+ 		                           const vector<const string*>* possibleOperators) const;
+ 		int getNextProgramCharDistance(const string &line, int i) const;
+ 		int  indexOf(vector<const string*> &container, const string* element) const;
+-		void setBlockIndent(bool state);
+-		void setBracketIndent(bool state);
+ 		string trim(const string &str) const;
+ 		string rtrim(const string &str) const;
+ 
