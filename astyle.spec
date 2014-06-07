@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        2.04
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 Group:          Development/Tools
@@ -70,6 +70,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.04-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Thu Mar 20 2014 Dan Horák <dan[at]danny.cz> - 2.04-3
 - compile directly in %%build so the astyle binary links against our library
 - include public header file in devel subpackage
