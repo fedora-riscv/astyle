@@ -1,7 +1,9 @@
 Name:           astyle
-Version:        2.05
+Version:        2.05.1
 Release:        1%{?dist}
 Summary:        Source code formatter for C-like programming languages
+
+%global soversion 2.05
 
 Group:          Development/Tools
 License:        LGPLv3+
@@ -40,8 +42,8 @@ chmod a-x doc/*
 pushd src
     # it's much easier to compile it here than trying to fix the Makefile
     g++ $RPM_OPT_FLAGS -fPIC -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp
-    g++ -shared -o libastyle-%{version}.so *.o -Wl,-soname,libastyle-%{version}.so
-    ln -s libastyle-%{version}.so libastyle.so
+    g++ -shared -o libastyle-%{soversion}.so *.o -Wl,-soname,libastyle-%{soversion}.so
+    ln -s libastyle-%{soversion}.so libastyle.so
     g++ $RPM_OPT_FLAGS -c ASLocalizer.cpp astyle_main.cpp
     g++ $RPM_OPT_FLAGS -o astyle ASLocalizer.o astyle_main.o -L. -lastyle
 popd
@@ -51,7 +53,7 @@ pushd src
     mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir}}
 
     install -p -m 755 astyle $RPM_BUILD_ROOT%{_bindir}
-    install -p -m 755 libastyle-%{version}.so $RPM_BUILD_ROOT%{_libdir}
+    install -p -m 755 libastyle-%{soversion}.so $RPM_BUILD_ROOT%{_libdir}
     cp -P libastyle.so $RPM_BUILD_ROOT%{_libdir}
     install -p -m 644 astyle.h $RPM_BUILD_ROOT%{_includedir}
 popd
@@ -70,6 +72,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Wed Dec 17 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.05.1-1
+- update to 2.05.1 (#1175136), but stay at same soversion for library
+
 * Thu Nov 20 2014 Thomas Spura <tomspur@fedoraproject.org> - 2.05-1
 - update to 2.05 (#1166336)
 
