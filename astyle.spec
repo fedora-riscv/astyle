@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        2.05.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global soversion 2.05
@@ -72,6 +72,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.05.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 2.05.1-2
 - Rebuilt for GCC 5 C++11 ABI change
 
