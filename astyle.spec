@@ -1,17 +1,15 @@
 Name:           astyle
-Version:        2.06
+Version:        3.0
 Release:        1%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
-%global soversion 2.06
+%global majorversion	3
+%global soversion	3.0.0
 
 Group:          Development/Tools
 License:        LGPLv3+
 URL:            http://astyle.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
-# publish API used by Code::Blocks IDE
-# not used anymore by codeblocks >= 16.01
-#Patch0:         %{name}-2.04-indent-api.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -42,9 +40,9 @@ chmod a-x doc/*
 
 pushd src
     # it's much easier to compile it here than trying to fix the Makefile
-    g++ $RPM_OPT_FLAGS -fPIC -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp
-    g++ -shared -o libastyle-%{soversion}.so *.o -Wl,-soname,libastyle-%{soversion}.so
-    ln -s libastyle-%{soversion}.so libastyle.so
+    g++ $RPM_OPT_FLAGS -DASTYLE_LIB -fPIC -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp
+    g++ -shared -o libastyle.so.%{soversion} *.o -Wl,-soname,libastyle.so.%{majorversion}
+    ln -s libastyle.so.%{soversion} libastyle.so
     g++ $RPM_OPT_FLAGS -c ASLocalizer.cpp astyle_main.cpp
     g++ $RPM_OPT_FLAGS -o astyle ASLocalizer.o astyle_main.o -L. -lastyle
 popd
@@ -54,7 +52,7 @@ pushd src
     mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir}}
 
     install -p -m 755 astyle $RPM_BUILD_ROOT%{_bindir}
-    install -p -m 755 libastyle-%{soversion}.so $RPM_BUILD_ROOT%{_libdir}
+    install -p -m 755 libastyle.so.%{soversion} $RPM_BUILD_ROOT%{_libdir}
     cp -P libastyle.so $RPM_BUILD_ROOT%{_libdir}
     install -p -m 644 astyle.h $RPM_BUILD_ROOT%{_includedir}
 popd
@@ -66,13 +64,16 @@ popd
 %files
 %doc doc/*.html
 %{_bindir}/astyle
-%{_libdir}/libastyle-*.so
+%{_libdir}/libastyle.so.%{soversion}
 
 %files devel
 %{_libdir}/libastyle.so
 %{_includedir}/astyle.h
 
 %changelog
+* Mon Apr 10 2017 Jens Lody <fedora@jenslody.de> - 3.0-1
+- Update to 3.0
+
 * Sun Feb 12 2017 Jens Lody <fedora@jenslody.de> - 2.06-1
 - update to 2.06 (#1411164)
 
