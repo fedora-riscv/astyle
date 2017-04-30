@@ -1,17 +1,22 @@
 Name:           astyle
 Version:        3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
-%global majorversion	3
-%global soversion	3.0.0
+%global majorversion    3
+%global soversion       3.0.0
 
 Group:          Development/Tools
 License:        LGPLv3+
 URL:            http://astyle.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
 
+BuildRequires:  java-devel >= 1:1.8.0
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+# Make the astyle-lib usable for arduino
+Patch0:         astyle-arduino.patch
 
 %description
 Artistic Style is a source code indenter, source code formatter, and
@@ -32,7 +37,7 @@ This package contains the shared library.
 
 %prep
 %setup -q -n %{name}
-#%%patch0 -p1 -b .indent-api
+%patch0 -p1
 
 %build
 chmod a-x src/*
@@ -40,7 +45,7 @@ chmod a-x doc/*
 
 pushd src
     # it's much easier to compile it here than trying to fix the Makefile
-    g++ $RPM_OPT_FLAGS -DASTYLE_LIB -fPIC -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp
+    g++ $RPM_OPT_FLAGS -DASTYLE_LIB -DASTYLE_JNI -fPIC -I/usr/lib/jvm/java/include -I/usr/lib/jvm/java/include/linux -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp astyle_main.cpp
     g++ -shared -o libastyle.so.%{soversion} *.o -Wl,-soname,libastyle.so.%{majorversion}
     ln -s libastyle.so.%{soversion} libastyle.so
     g++ $RPM_OPT_FLAGS -c ASLocalizer.cpp astyle_main.cpp
@@ -71,6 +76,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Sat Apr 29 2017 Jens Lody <fedora@jenslody.de> - 3.0-2
+- Make the astyle-lib usable for arduino.
+
 * Mon Apr 10 2017 Jens Lody <fedora@jenslody.de> - 3.0-1
 - Update to 3.0
 
