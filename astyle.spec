@@ -1,15 +1,15 @@
 Name:           astyle
-Version:        3.0
-Release:        2%{?dist}
+Version:        3.0.1
+Release:        1%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global majorversion    3
-%global soversion       3.0.0
+%global soversion       3.0.1
 
 Group:          Development/Tools
 License:        LGPLv3+
-URL:            http://astyle.sourceforge.net/
-Source0:        http://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
+URL:            https://astyle.sourceforge.net/
+Source0:        https://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
 
 BuildRequires:  java-devel >= 1:1.8.0
 
@@ -76,6 +76,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Wed May 31 2017 Jens Lody <fedora@jenslody.de> - 3.0.1-1
+- Update to 3.0.1
+
 * Sat Apr 29 2017 Jens Lody <fedora@jenslody.de> - 3.0-2
 - Make the astyle-lib usable for arduino.
 
