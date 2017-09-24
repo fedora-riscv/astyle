@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        3.0.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global majorversion    3
@@ -17,6 +17,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # Make the astyle-lib usable for arduino
 Patch0:         astyle-arduino.patch
+# Fix (hardcoded) path to html-help
+Patch1:         astyle-html-help.patch
 
 %description
 Artistic Style is a source code indenter, source code formatter, and
@@ -38,6 +40,7 @@ This package contains the shared library.
 %prep
 %setup -q -n %{name}
 %patch0 -p1
+%patch1 -p1
 
 %build
 chmod a-x src/*
@@ -76,6 +79,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Sun Sep 24 2017 Jens Lody <fedora@jenslody.de> - 3.0.1-4
+- Fix #1493473 (astyle --html does not find documentation).
+
 * Wed Aug 02 2017 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
 

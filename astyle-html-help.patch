@@ -1,0 +1,11 @@
+--- a/src/astyle_main.cpp	2017-09-24 11:46:50.008331032 +0200
++++ b/src/astyle_main.cpp	2017-09-24 11:47:05.826623047 +0200
+@@ -1314,7 +1314,7 @@
+ void ASConsole::launchDefaultBrowser(const char* filePathIn /*nullptr*/) const
+ {
+ 	struct stat statbuf;
+-	string htmlDefaultPath = "/usr/share/doc/astyle/html/";
++	string htmlDefaultPath = "/usr/share/doc/astyle/";
+ 	string htmlDefaultFile = "astyle.html";
+ 
+ 	// build file path
