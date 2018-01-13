@@ -1,14 +1,14 @@
 Name:           astyle
-Version:        3.0.1
-Release:        4%{?dist}
+Version:        3.1
+Release:        1%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global majorversion    3
-%global soversion       3.0.1
+%global soversion       3.1.0
 
 Group:          Development/Tools
 License:        LGPLv3+
-URL:            https://astyle.sourceforge.net/
+URL:            http://astyle.sourceforge.net/
 Source0:        https://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
 
 BuildRequires:  java-devel >= 1:1.8.0
@@ -79,6 +79,10 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Sat Jan 13 2018 Jens Lody <fedora@jenslody.de> - 3.1-1
+- Update to 3.1 (#1533678)
+- Fix project url (no https !)
+
 * Sun Sep 24 2017 Jens Lody <fedora@jenslody.de> - 3.0.1-4
 - Fix #1493473 (astyle --html does not find documentation).
 
