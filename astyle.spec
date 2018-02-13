@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        3.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global majorversion    3
@@ -48,21 +48,21 @@ chmod a-x doc/*
 
 pushd src
     # it's much easier to compile it here than trying to fix the Makefile
-    g++ $RPM_OPT_FLAGS -DASTYLE_LIB -DASTYLE_JNI -fPIC -I/usr/lib/jvm/java/include -I/usr/lib/jvm/java/include/linux -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp astyle_main.cpp
+    g++ %{optflags} -DASTYLE_LIB -DASTYLE_JNI -fPIC -I/usr/lib/jvm/java/include -I/usr/lib/jvm/java/include/linux -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp astyle_main.cpp
     g++ -shared -o libastyle.so.%{soversion} *.o -Wl,-soname,libastyle.so.%{majorversion}
     ln -s libastyle.so.%{soversion} libastyle.so
-    g++ $RPM_OPT_FLAGS -c ASLocalizer.cpp astyle_main.cpp
-    g++ $RPM_OPT_FLAGS -o astyle ASLocalizer.o astyle_main.o -L. -lastyle
+    g++ %{optflags} -c ASLocalizer.cpp astyle_main.cpp
+    g++ %{optflags} -o astyle ASLocalizer.o astyle_main.o -L. -lastyle
 popd
 
 %install
 pushd src
-    mkdir -p $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir}}
+    mkdir -p %{buildroot}{%{_bindir},%{_libdir},%{_includedir}}
 
-    install -p -m 755 astyle $RPM_BUILD_ROOT%{_bindir}
-    install -p -m 755 libastyle.so.%{soversion} $RPM_BUILD_ROOT%{_libdir}
-    cp -P libastyle.so $RPM_BUILD_ROOT%{_libdir}
-    install -p -m 644 astyle.h $RPM_BUILD_ROOT%{_includedir}
+    install -p -m 755 astyle %{buildroot}%{_bindir}
+    install -p -m 755 libastyle.so.%{soversion} %{buildroot}%{_libdir}
+    cp -P libastyle.so %{buildroot}%{_libdir}
+    install -p -m 644 astyle.h %{buildroot}%{_includedir}
 popd
 
 %post -p /sbin/ldconfig
@@ -72,6 +72,7 @@ popd
 %files
 %doc doc/*.html
 %{_bindir}/astyle
+%{_libdir}/libastyle.so.%{majorversion}
 %{_libdir}/libastyle.so.%{soversion}
 
 %files devel
@@ -79,6 +80,10 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Tue Feb 13 2018 Jens Lody <fedora@jenslody.de> - 3.1-3
+- Build fix
+- Consistently use macros instead of variables in spec-file
+
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 3.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
