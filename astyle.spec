@@ -13,7 +13,6 @@ Source0:        https://downloads.sourceforge.net/%{name}/%{name}_%{version}_lin
 
 BuildRequires:  java-devel >= 1:1.8.0
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # Make the astyle-lib usable for arduino
 Patch0:         astyle-arduino.patch
