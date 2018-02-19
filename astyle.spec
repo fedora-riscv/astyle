@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        3.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global majorversion    3
@@ -11,6 +11,7 @@ License:        LGPLv3+
 URL:            http://astyle.sourceforge.net/
 Source0:        https://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
 
+BuildRequires:  gcc-c++
 BuildRequires:  java-devel >= 1:1.8.0
 
 
@@ -79,6 +80,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Mon Feb 19 2018 Jens Lody <fedora@jenslody.de> - 3.1-4
+- Add BuildRequires for gcc-c++.
+
 * Tue Feb 13 2018 Jens Lody <fedora@jenslody.de> - 3.1-3
 - Build fix
 - Consistently use macros instead of variables in spec-file
