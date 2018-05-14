@@ -1,0 +1,13 @@
+Index: AStyle/src/astyle_main.cpp
+===================================================================
+--- AStyle/src/astyle_main.cpp	(revision 655)
++++ AStyle/src/astyle_main.cpp	(working copy)
+@@ -1347,7 +1347,7 @@ void ASConsole::getFileNames(const string& directo
+ 
+ 	// sort the current entries for fileName
+ 	if (firstEntry < fileName.size())
+-		sort(&fileName[firstEntry], &fileName[fileName.size()]);
++		sort(fileName.begin() + firstEntry, fileName.end());
+ 
+ 	// recurse into sub directories
+ 	// if not doing recursive, subDirectory is empty

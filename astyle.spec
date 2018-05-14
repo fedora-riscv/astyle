@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        3.1
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global majorversion    3
@@ -19,6 +19,10 @@ BuildRequires:  java-devel >= 1:1.8.0
 Patch0:         astyle-arduino.patch
 # Fix (hardcoded) path to html-help
 Patch1:         astyle-html-help.patch
+# Fix abort with gcc8 -Wp,-D_GLIBCXX_ASSERTION
+# https://bugzilla.redhat.com/show_bug.cgi?id=1573092
+# Patch proposed: https://sourceforge.net/p/astyle/bugs/503/
+Patch2:         astyle-r655-gcc8-vector-at-end.patch
 
 %description
 Artistic Style is a source code indenter, source code formatter, and
@@ -41,6 +45,7 @@ This package contains the shared library.
 %setup -q -n %{name}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 chmod a-x src/*
@@ -80,6 +85,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Mon May 14 2018 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.1-5
+- Fix abort with gcc8 -Wp,-D_GLIBCXX_ASSERTION (bug 1573092)
+
 * Mon Feb 19 2018 Jens Lody <fedora@jenslody.de> - 3.1-4
 - Add BuildRequires for gcc-c++.
 
