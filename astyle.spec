@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        3.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global majorversion    3
@@ -85,6 +85,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Thu Jul 12 2018 Fedora Release Engineering <releng@fedoraproject.org> - 3.1-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Mon May 14 2018 Mamoru TASAKA <mtasaka@fedoraproject.org> - 3.1-5
 - Fix abort with gcc8 -Wp,-D_GLIBCXX_ASSERTION (bug 1573092)
 
