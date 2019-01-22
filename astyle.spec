@@ -70,9 +70,7 @@ pushd src
     install -p -m 644 astyle.h %{buildroot}%{_includedir}
 popd
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
+%ldconfig_scriptlets
 
 %files
 %doc doc/*.html
