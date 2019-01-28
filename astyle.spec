@@ -6,7 +6,6 @@ Summary:        Source code formatter for C-like programming languages
 %global majorversion    3
 %global soversion       3.1.0
 
-Group:          Development/Tools
 License:        LGPLv3+
 URL:            http://astyle.sourceforge.net/
 Source0:        https://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
@@ -31,7 +30,6 @@ languages.
 
 %package devel
 Summary:        Source code formatter for C-like programming languages
-Group:          Development/Tools
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 %description devel
 Artistic Style is a source code indenter, source code formatter, and
