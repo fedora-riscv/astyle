@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        3.1
-Release:        15%{?dist}
+Release:        16%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global majorversion    3
@@ -11,11 +11,8 @@ URL:            http://astyle.sourceforge.net/
 Source0:        https://downloads.sourceforge.net/%{name}/%{name}_%{version}_linux.tar.gz
 
 BuildRequires:  gcc-c++
-BuildRequires:  java-devel >= 1:1.8.0
 
 
-# Make the astyle-lib usable for arduino
-Patch0:         astyle-arduino.patch
 # Fix (hardcoded) path to html-help
 Patch1:         astyle-html-help.patch
 # Fix abort with gcc8 -Wp,-D_GLIBCXX_ASSERTION
@@ -41,21 +38,21 @@ This package contains the shared library.
 
 %prep
 %setup -q -n %{name}
-%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 
-%build
-chmod a-x src/*
-chmod a-x doc/*
+# drop executable bit from all files
+find . -type f -exec chmod a-x {} \;
 
+
+%build
 pushd src
     # it's much easier to compile it here than trying to fix the Makefile
-    g++ %{optflags} -DASTYLE_LIB -DASTYLE_JNI -fPIC -I/usr/lib/jvm/java/include -I/usr/lib/jvm/java/include/linux -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp astyle_main.cpp
-    g++ -shared -o libastyle.so.%{soversion} *.o -Wl,-soname,libastyle.so.%{majorversion}
+    g++ %{build_cxxflags} -DASTYLE_LIB -fPIC -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp astyle_main.cpp
+    g++ %{build_ldflags} -shared -o libastyle.so.%{soversion} *.o -Wl,-soname,libastyle.so.%{majorversion}
     ln -s libastyle.so.%{soversion} libastyle.so
-    g++ %{optflags} -c ASLocalizer.cpp astyle_main.cpp
-    g++ %{optflags} -o astyle ASLocalizer.o astyle_main.o -L. -lastyle
+    g++ %{build_cxxflags} -c ASLocalizer.cpp astyle_main.cpp
+    g++ %{build_ldflags} -o astyle ASLocalizer.o astyle_main.o -L. -lastyle
 popd
 
 %install
@@ -71,6 +68,7 @@ popd
 %ldconfig_scriptlets
 
 %files
+%license LICENSE.md
 %doc doc/*.html
 %{_bindir}/astyle
 %{_libdir}/libastyle.so.%{majorversion}
@@ -81,6 +79,10 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Wed Jul 06 2022 Dan Horák <dan[at]danny.cz> -  3.1-16
+- rebuild without JNI support (#2104020)
+- use distro-wide build flags
+
 * Sat Feb 05 2022 Jiri Vanek <jvanek@redhat.com> - 3.1-15
 - Rebuilt for java-17-openjdk as system jdk
 
