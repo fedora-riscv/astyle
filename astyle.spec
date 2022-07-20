@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        3.1
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global majorversion    3
@@ -79,6 +79,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 3.1-17
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
 * Wed Jul 06 2022 Dan Horák <dan[at]danny.cz> -  3.1-16
 - rebuild without JNI support (#2104020)
 - use distro-wide build flags
