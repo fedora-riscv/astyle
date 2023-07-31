@@ -1,6 +1,6 @@
 Name:           astyle
 Version:        3.1
-Release:        18%{?dist}
+Release:        18.rv64%{?dist}
 Summary:        Source code formatter for C-like programming languages
 
 %global majorversion    3
@@ -50,6 +50,7 @@ pushd src
     # it's much easier to compile it here than trying to fix the Makefile
     g++ %{build_cxxflags} -DASTYLE_LIB -fPIC -c ASBeautifier.cpp ASEnhancer.cpp ASFormatter.cpp ASResource.cpp astyle_main.cpp
     g++ %{build_ldflags} -shared -o libastyle.so.%{soversion} *.o -Wl,-soname,libastyle.so.%{majorversion}
+    ln -s libastyle.so.%{soversion} libastyle.so.%{majorversion}
     ln -s libastyle.so.%{soversion} libastyle.so
     g++ %{build_cxxflags} -c ASLocalizer.cpp astyle_main.cpp
     g++ %{build_ldflags} -o astyle ASLocalizer.o astyle_main.o -L. -lastyle
@@ -58,9 +59,9 @@ popd
 %install
 pushd src
     mkdir -p %{buildroot}{%{_bindir},%{_libdir},%{_includedir}}
-
     install -p -m 755 astyle %{buildroot}%{_bindir}
     install -p -m 755 libastyle.so.%{soversion} %{buildroot}%{_libdir}
+    install -p -m 755 libastyle.so.%{majorversion} %{buildroot}%{_libdir}
     cp -P libastyle.so %{buildroot}%{_libdir}
     install -p -m 644 astyle.h %{buildroot}%{_includedir}
 popd
@@ -79,6 +80,9 @@ popd
 %{_includedir}/astyle.h
 
 %changelog
+* Tue Aug 1 2023 Zhengyu He <hezhy472013@gmail.com> - 3.1-18.rv64
+- Add symlink for majorversion (Reference: http://fedora.riscv.rocks:3000/rpms/astyle/commit/cacc74998f8e57c022e41a4ca7f3dc0542b34799)
+
 * Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 3.1-18
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
 
